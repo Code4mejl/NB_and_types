@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Naive Bayes AI Dashboard</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<h1 class="title">Naive Bayes AI Dashboard</h1>
+
+<div class="container">
+
+<!-- Spam Detection -->
+
+<div class="card">
+
+<h2>Spam Detection</h2>
+
+<textarea id="email" placeholder="Enter email message"></textarea>
+
+<button onclick="predictSpam()">Predict</button>
+
+<p id="spamResult"></p>
+
+</div>
+
+
+<!-- Fake News Detection -->
+
+<div class="card">
+
+<h2>Fake News Detection</h2>
+
+<textarea id="news" placeholder="Enter news content"></textarea>
+
+<button onclick="predictFake()">Predict</button>
+
+<p id="fakeResult"></p>
+
+</div>
+
+
+<!-- Student Result -->
+
+<div class="card">
+
+<h2>Student Result Prediction</h2>
+
+<input id="math" placeholder="Math Score">
+
+<input id="reading" placeholder="Reading Score">
+
+<input id="writing" placeholder="Writing Score">
+
+<button onclick="predictStudent()">Predict</button>
+
+<p id="studentResult"></p>
+
+</div>
+
+</div>
+
+
+<script>
+
+function predictSpam(){
+
+let text=document.getElementById("email").value
+
+fetch("/predict_spam",{
+method:"POST",
+headers:{"Content-Type":"application/x-www-form-urlencoded"},
+body:"email="+text
+})
+.then(res=>res.json())
+.then(data=>{
+document.getElementById("spamResult").innerText="Prediction: "+data.result
+})
+
+}
+
+
+function predictFake(){
+
+let text=document.getElementById("news").value
+
+fetch("/predict_fake",{
+method:"POST",
+headers:{"Content-Type":"application/x-www-form-urlencoded"},
+body:"news="+text
+})
+.then(res=>res.json())
+.then(data=>{
+document.getElementById("fakeResult").innerText="Prediction: "+data.result
+})
+
+}
+
+
+function predictStudent(){
+
+let math=document.getElementById("math").value
+let reading=document.getElementById("reading").value
+let writing=document.getElementById("writing").value
+
+fetch("/predict_student",{
+method:"POST",
+headers:{"Content-Type":"application/x-www-form-urlencoded"},
+body:`math=${math}&reading=${reading}&writing=${writing}`
+})
+.then(res=>res.json())
+.then(data=>{
+document.getElementById("studentResult").innerText="Prediction: "+data.result
+})
+
+}
+
+</script>
+
+</body>
+</html>
